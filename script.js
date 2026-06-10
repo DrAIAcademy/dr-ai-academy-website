@@ -43,6 +43,34 @@ window.addEventListener('mousemove', (event) => {
   cursorGlow.style.left = `${event.clientX}px`;
   cursorGlow.style.top = `${event.clientY}px`;
 });
+function openProductModal() {
+  const modal = document.getElementById("productModal");
+  if (modal) {
+    modal.classList.add("show");
+    document.body.style.overflow = "hidden";
+  }
+}
+
+function closeProductModal() {
+  const modal = document.getElementById("productModal");
+  if (modal) {
+    modal.classList.remove("show");
+    document.body.style.overflow = "";
+  }
+}
+
+document.addEventListener("keydown", function (event) {
+  if (event.key === "Escape") {
+    closeProductModal();
+  }
+});
+
+document.addEventListener("click", function (event) {
+  const modal = document.getElementById("productModal");
+  if (modal && event.target === modal) {
+    closeProductModal();
+  }
+});
 
 // Newsletter and community CTAs are connected directly to LinkedIn and Telegram.
 // Later, you can add analytics tracking here if required.
