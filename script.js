@@ -131,7 +131,7 @@ const shopProducts = [
     link: "https://superprofile.bio/course/400eb00a-429b-481b-8222-ebdc35437e52"
   },
   {
-  id: "NEET Physics Gamified Labs",
+  id: "neet-physics-gamified-labs",
   badge: "NEET Physics",
   icon: "⚡",
   title: "Physics Gamified Concept Labs for NEET Foundation",
