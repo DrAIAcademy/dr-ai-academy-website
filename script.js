@@ -175,4 +175,6 @@ function renderShopProducts() {
     .join("");
 }
 
-renderShopProducts();
+document.addEventListener("DOMContentLoaded", function () {
+  renderShopProducts();
+});
