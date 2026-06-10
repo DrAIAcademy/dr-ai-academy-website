@@ -129,7 +129,7 @@ const shopProducts = [
       "Interactive and gamified Science labs for Class 8 students. Designed to make NCERT Science concepts visual, practical and fun.",
     price: "View Details",
     link: "https://superprofile.bio/course/400eb00a-429b-481b-8222-ebdc35437e52"
-  }
+  },
   {
   id: "NEET Physics Gamified Labs",
   badge: "NEET Physics",
