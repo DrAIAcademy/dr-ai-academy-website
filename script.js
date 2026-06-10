@@ -2,16 +2,63 @@ const menuToggle = document.querySelector('.menu-toggle');
 const navLinks = document.querySelector('.nav-links');
 const navItems = document.querySelectorAll('.nav-links a');
 const cursorGlow = document.querySelector('.cursor-glow');
+const homePage = document.getElementById('homePage');
+const shopPage = document.getElementById('ai-shop');
+
+function closeMobileMenu() {
+  navLinks?.classList.remove('open');
+  menuToggle?.setAttribute('aria-expanded', 'false');
+}
 
 menuToggle?.addEventListener('click', () => {
   const isOpen = navLinks.classList.toggle('open');
   menuToggle.setAttribute('aria-expanded', String(isOpen));
 });
 
-navItems.forEach((link) => {
-  link.addEventListener('click', () => {
-    navLinks.classList.remove('open');
-    menuToggle?.setAttribute('aria-expanded', 'false');
+function showHome(targetHash = '#home') {
+  homePage?.classList.add('active-page');
+  shopPage?.classList.remove('active-page');
+  document.body.classList.remove('shop-open');
+
+  const target = document.querySelector(targetHash);
+  if (target) {
+    setTimeout(() => target.scrollIntoView({ behavior: 'smooth', block: 'start' }), 50);
+  }
+
+  history.replaceState(null, '', targetHash);
+}
+
+function showShop() {
+  homePage?.classList.remove('active-page');
+  shopPage?.classList.add('active-page');
+  document.body.classList.add('shop-open');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+  history.replaceState(null, '', '#ai-shop');
+}
+
+document.querySelectorAll('.js-shop-link, .js-shop-button').forEach((item) => {
+  item.addEventListener('click', (event) => {
+    event.preventDefault();
+    closeMobileMenu();
+    showShop();
+  });
+});
+
+document.querySelectorAll('.js-home-section').forEach((item) => {
+  item.addEventListener('click', (event) => {
+    const hash = item.getAttribute('href') || '#home';
+    if (!hash.startsWith('#')) return;
+    event.preventDefault();
+    closeMobileMenu();
+    showHome(hash);
+  });
+});
+
+document.querySelectorAll('.js-home-link, .js-back-home').forEach((item) => {
+  item.addEventListener('click', (event) => {
+    event.preventDefault();
+    closeMobileMenu();
+    showHome('#home');
   });
 });
 
@@ -26,10 +73,10 @@ const revealObserver = new IntersectionObserver((entries) => {
 
 document.querySelectorAll('.reveal').forEach((el) => revealObserver.observe(el));
 
-const sections = document.querySelectorAll('section[id]');
+const sections = document.querySelectorAll('#homePage section[id]');
 const activeObserver = new IntersectionObserver((entries) => {
   entries.forEach((entry) => {
-    if (!entry.isIntersecting) return;
+    if (!entry.isIntersecting || document.body.classList.contains('shop-open')) return;
     const id = entry.target.getAttribute('id');
     navItems.forEach((link) => {
       link.classList.toggle('active', link.getAttribute('href') === `#${id}`);
@@ -43,34 +90,32 @@ window.addEventListener('mousemove', (event) => {
   cursorGlow.style.left = `${event.clientX}px`;
   cursorGlow.style.top = `${event.clientY}px`;
 });
-function openProductModal() {
-  const modal = document.getElementById("productModal");
-  if (modal) {
-    modal.classList.add("show");
-    document.body.style.overflow = "hidden";
-  }
-}
 
-function closeProductModal() {
-  const modal = document.getElementById("productModal");
-  if (modal) {
-    modal.classList.remove("show");
-    document.body.style.overflow = "";
-  }
-}
+window.openProductModal = function () {
+  const modal = document.getElementById('productModal');
+  if (!modal) return;
+  modal.classList.add('show');
+  modal.setAttribute('aria-hidden', 'false');
+  document.body.style.overflow = 'hidden';
+};
 
-document.addEventListener("keydown", function (event) {
-  if (event.key === "Escape") {
-    closeProductModal();
-  }
+window.closeProductModal = function () {
+  const modal = document.getElementById('productModal');
+  if (!modal) return;
+  modal.classList.remove('show');
+  modal.setAttribute('aria-hidden', 'true');
+  document.body.style.overflow = '';
+};
+
+document.addEventListener('keydown', function (event) {
+  if (event.key === 'Escape') window.closeProductModal();
 });
 
-document.addEventListener("click", function (event) {
-  const modal = document.getElementById("productModal");
-  if (modal && event.target === modal) {
-    closeProductModal();
-  }
+document.addEventListener('click', function (event) {
+  const modal = document.getElementById('productModal');
+  if (modal && event.target === modal) window.closeProductModal();
 });
 
-// Newsletter and community CTAs are connected directly to LinkedIn and Telegram.
-// Later, you can add analytics tracking here if required.
+if (window.location.hash === '#ai-shop') {
+  showShop();
+}
