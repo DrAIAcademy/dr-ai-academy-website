@@ -6,4 +6,4 @@ Links:
 - App: https://careerdaddy.draiacademy.com
 - Mock interview: https://careerdaddy.draiacademy.com/mock-interview
 - Pricing: https://careerdaddy.draiacademy.com/pricing
-- WhatsApp: 7080680911
+- WhatsApp: XXXXXXXXXXXXXXXX
